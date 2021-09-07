@@ -3,6 +3,8 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+var compression = require('compression');
+var helmet = require('helmet');
 
 var generatedPageRouter = require('./routes/generatedPageRouter');
 var imageRouter = require('./routes/imageRouter');
@@ -28,8 +30,11 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
 
+app.use(compression());
+app.use(helmet());
+
+app.use(express.static(path.join(__dirname, 'public')));
 app.use('/img', imageRouter);
 app.use('/', generatedPageRouter);
 
