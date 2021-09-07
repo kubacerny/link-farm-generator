@@ -1,0 +1,18 @@
+extends layout
+
+block content
+  div!= pageHeaderHTML
+
+  h1= title
+
+  div(id="banner")
+    img(src=imgSrc, alt=title, width=640, height=320)
+
+  div(id="links")
+    each innerLink in innerLinks
+      a(href=innerLink.link)= innerLink.anchorText
+
+  each paragraph in paragraphs
+    p= paragraph
+
+  a(href=landingPageLink.link)= landingPageLink.anchorText

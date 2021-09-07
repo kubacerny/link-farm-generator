@@ -1,0 +1,14 @@
+body {
+  padding: 50px;
+  font: 18px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+
+a {
+  color: #006eff;
+  font-size: 22px
+}
+
+#links a {
+  margin: 22px 22px 22px 0;
+  padding: 10px 10px;
+}
