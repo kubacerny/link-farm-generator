@@ -10,15 +10,14 @@ var generatedPageRouter = require('./routes/generatedPageRouter');
 var imageRouter = require('./routes/imageRouter');
 
 var configProvider = require('./lib/configProvider');
-var backlinksDB = require('./lib/backlinksDB');
+var generators = require('./lib/generators');
 
 
 // init app 
 // - prepare data
 
 const config = configProvider.init();
-backlinksDB.init();
-
+generators.init();
 
 var app = express();
 
@@ -32,7 +31,15 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
 app.use(compression());
-app.use(helmet());
+app.use(helmet({
+  contentSecurityPolicy: {
+    useDefaults: true,
+    directives: {
+      "script-src": ["'self'", "example.com"],
+      "img-src": ["'self'", "obrazky.localhost:3000"],
+    },
+  }
+}));
 
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/img', imageRouter);
