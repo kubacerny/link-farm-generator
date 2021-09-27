@@ -1,0 +1,36 @@
+doctype html
+html(lang="cs", amp)
+  head
+    meta(charset="utf-8")    
+    meta(name="viewport", content="width=device-width, initial-scale=1, shrink-to-fit=no")
+    meta(name="description", content= metaDescription)
+    link(rel="canonical" href="https://" + myURL)
+    script(async, src="https://cdn.ampproject.org/v0.js")
+
+    title= title
+
+    //- we use only inline styles
+    //- link(rel='stylesheet', href='/stylesheets/style.css')
+    style(amp-custom).
+        body {
+          padding: 50px;
+          font: 18px "Lucida Grande", Helvetica, Arial, sans-serif;
+        }
+
+        a {
+          color: #006eff;
+          font-size: 22px
+        }
+
+        #links a {
+          margin: 22px 22px 22px 0;
+          padding: 10px 10px;
+        }
+    style(amp-boilerplate).
+        body{-webkit-animation:-amp-start 8s steps(1,end) 0s 1 normal both;-moz-animation:-amp-start 8s steps(1,end) 0s 1 normal both;-ms-animation:-amp-start 8s steps(1,end) 0s 1 normal both;animation:-amp-start 8s steps(1,end) 0s 1 normal both}@-webkit-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@-moz-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@-ms-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@-o-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}
+    noscript
+      style(amp-boilerplate).
+        body{-webkit-animation:none;-moz-animation:none;-ms-animation:none;animation:none}
+     
+  body
+    block content

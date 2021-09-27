@@ -6,18 +6,26 @@ var logger = require('morgan');
 var compression = require('compression');
 var helmet = require('helmet');
 
-var generatedPageRouter = require('./routes/generatedPageRouter');
-var imageRouter = require('./routes/imageRouter');
+var indexRouter = require('./routes/index');
+var adminRouter = require('./routes/admin');
 
-var configProvider = require('./lib/configProvider');
-var generators = require('./lib/generators');
+require('dotenv').config()
+const { auth } = require('express-openid-connect');
+const { requiresAuth } = require('express-openid-connect');
 
-
-// init app 
-// - prepare data
-
-const config = configProvider.init();
-generators.init();
+// Auth0
+//    * session store is in a cookie
+//    * /login redirects user to auth0, 
+//    * AuthO after successful login to /admin and filling up authToken and saves it to a session store
+//    * /logout screen will clean session store through Auth0 and then redirects to logout url
+const auth0Config = {
+  authRequired: false,
+  auth0Logout: true,
+  baseURL: process.env.BASE_URL,
+  clientID: process.env.CLIENT_ID,
+  issuerBaseURL: process.env.OAUTH_ISSUER,
+  secret: process.env.OAUTH_SECRET
+};
 
 var app = express();
 
@@ -35,15 +43,18 @@ app.use(helmet({
   contentSecurityPolicy: {
     useDefaults: true,
     directives: {
-      "script-src": ["'self'", "example.com"],
+      "script-src": ["'self'", "cdn.ampproject.org"],
       "img-src": ["'self'", "obrazky.localhost:3000"],
     },
   }
 }));
 
+// auth router attaches /login, /logout, and /callback routes to the baseURL
+app.use(auth(auth0Config));
+
 app.use(express.static(path.join(__dirname, 'public')));
-app.use('/img', imageRouter);
-app.use('/', generatedPageRouter);
+app.use('/', indexRouter);
+app.use('/admin', requiresAuth(), adminRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

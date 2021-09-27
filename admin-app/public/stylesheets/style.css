@@ -1,0 +1,27 @@
+body, nav, nav *, div {
+  margin: 0;
+  padding: 0;
+}
+body {
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+.content {
+  padding: 1em 3em;
+}
+.header, .footer {
+  background-color: black;
+  color:blanchedalmond;
+}
+.header {
+  display: flex;
+  justify-content: space-between;  
+}
+.header .menu > *,
+.header nav ul li {
+  display: inline-flex;
+  margin-right: 1em;
+}
+
+a {
+  color: #00B7FF;
+}

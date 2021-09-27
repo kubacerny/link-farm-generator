@@ -1,0 +1,17 @@
+.menu
+  div#logo
+    | Logo
+  nav
+    ul
+      li
+        a(href="/admin") Link Farm Config
+nav
+  ul
+    li
+      div= userName
+    - if (!isAuthenticated)
+        li
+          a(href="/login") Login
+    - else
+        li
+          a(href="/logout") Logout

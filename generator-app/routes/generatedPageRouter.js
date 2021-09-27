@@ -7,7 +7,8 @@ const generators = require('../lib/generators');
 const utils = require('../lib/utils');
 
 router.get('/*', function(req, res, next) {
-    const pageHashIndex = utils.getPageHashIndexFromURL(req.get('host') + req.originalUrl);
+    const myURL = req.get('host') + req.originalUrl;
+    const pageHashIndex = utils.getPageHashIndexFromURL(myURL);
     const pageCRC32Index = utils.getCRC32(pageHashIndex);
 
     config = configProvider.get();
@@ -20,7 +21,7 @@ router.get('/*', function(req, res, next) {
     const innerLinks = generators.getInternalLinks(pageCRC32Index);    
     const landingPageLink = backlinksDB.getTargetLink(pageCRC32Index);
 
-    res.render('index', { pageHeaderHTML, metaDescription, title, imgSrc, innerLinks, paragraphs, landingPageLink });
+    res.render('index', { myURL, pageHeaderHTML, metaDescription, title, imgSrc, innerLinks, paragraphs, landingPageLink });
 });
 
 module.exports = router;

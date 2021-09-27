@@ -1,0 +1,12 @@
+doctype html
+html
+  head
+    title= title
+    link(rel='stylesheet', href='/stylesheets/style.css')
+  body
+    .content.header
+      include components/topnavigation.pug
+    .content
+      block content
+    .content.footer
+      include components/footer.pug
