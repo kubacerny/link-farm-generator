@@ -2,6 +2,25 @@ extends layout
 
 block content
   h1= title
-  p Here you see configuration data
+
+  
+  .subnav 
+    nav
+      ul
+        li: a(href='/admin/update') Edit all
+        li: a(href=reloadLink target='_blank') Reload config on server
+        li: a(href=linkfarmHPLink) Go to link farm
+
+  h2 Link farm configuration:
+
+  pre!= config
+
+  p
+      a(href='/admin/update') Edit
+
+  h2 Link farm backlinks:
+
+  pre!= backlinksCSV
+
   p
     a(href='/admin/update') Edit

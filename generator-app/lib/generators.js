@@ -1,7 +1,7 @@
 const fs = require('fs');
 const parse = require('csv-parse/lib/sync');
-const configProvider = require('./configProvider');
-const backlinksDB = require('./backlinksDB');
+const configProvider = require('../../common-lib/configProvider');
+const backlinksDB = require('../../common-lib/backlinksDB');
 const utils = require('./utils');
 
 let config = {};
@@ -23,13 +23,14 @@ module.exports = {
         backlinksDB.init(config);
     },
 
-    getURLForPage(pageIndex) {
-        return "/" + pageIndex;
+    getURLForPage(pageIndex, host) {
+        host = host || "";
+        return host + "/" + pageIndex;
     },
 
     getTitle(url, hashIndex) {
         // get words from url
-        const urlWords = url.replace(/[^a-zA-Z]+/g, ' ').trim().split(' ');
+        const urlWords = []; // url.replace(/[^a-zA-Z]+/g, ' ').trim().split(' ');
         // get random words
         const hashWords = utils.getSHA512('pageWithIndex' + hashIndex).replace(/[^a-zA-Z]+/g, ' ').trim().split(' ');;
 
@@ -62,16 +63,18 @@ module.exports = {
         return paragraphs;
     },
 
-    getInternalLinks(hashIndex) {
+    getInternalLinks(hashIndex, host) {
         const internalLinks = [];
         for (var i = 0; i < config.pageInternalLinksCount; i++) {
             const linkedPageIndex = (hashIndex + 1 + i) % config.sitePagesCount;
-            const link = this.getURLForPage(linkedPageIndex);
-            const linkedPageHashIndex = utils.getPageHashIndexFromURL(link);
+            const linkRelative = this.getURLForPage(linkedPageIndex, "");
+            const linkAbsolute = this.getURLForPage(linkedPageIndex, host);
+            const linkedPageHashIndex = utils.getPageHashIndexFromURL(linkAbsolute);
 
             internalLinks.push({
-                link: link,
-                anchorText: this.getTitle(link, linkedPageHashIndex)
+                link: linkRelative,
+                anchorText: this.getTitle(linkAbsolute, linkedPageHashIndex),
+                paragraphs: this.getParagraphs(linkedPageHashIndex)
             });
         }
         return internalLinks;

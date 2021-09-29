@@ -1,5 +1,5 @@
 const fs = require('fs');
-const parse = require('csv-parse/lib/sync');
+const parse = require('../generator-app/node_modules/csv-parse/lib/sync');
 
 const requiredColumnNames = ['id', 'link', 'anchorText'];
 let links = [];
@@ -12,33 +12,48 @@ let config = {};
 //
 
 module.exports = {
-    init(myConfig) {
-        config = myConfig;
-        const csvUri = config.backlinksDBSource;
-
+    getCSVURI(config) {
+        return config.backlinksDBSource;
+    },
+    readLinksFromFile(config) {
+        const csvUri = this.getCSVURI(config);
         try {
             const data = fs.readFileSync(csvUri, {encoding:'utf8', flag:'r'});
-            links = parse(data, {
-                columns: true
-              });
+            return data;
         } catch (e) {
             if (e.code === 'ENOENT') {
-                console.error('Backlinks DB file not found: ' + e.message);
+                e.message = 'Backlinks DB file not found: ' + e.message;
             } else {
-                console.error('Error when parsing backlinks db file "' + csvUri + '": ' + e.message);
+                e.message = 'Error when parsing backlinks db file "' + csvUri + '": ' + e.message;
             }
             throw e;
         }
+    },
+    saveLinksToFile(rawCSVdata, config) {
+        fs.writeFileSync(this.getCSVURI(config), rawCSVdata, 'utf8');
+    },
+    validateRawData(data) {
+        let links = parse(data, {
+            columns: true
+            });
         if (links.length <= 0) {
-            console.error('Backlinks DB file contains no items.');
-            throw new Error();
+            throw new Error('Backlinks DB file contains no items.');
         } else {
             const firstItemColumnNames = Object.keys(links[0]);
             if (!(requiredColumnNames.every( k => firstItemColumnNames.includes(k) ))) {
-                console.error('Backlinks DB file items have columns [' + firstItemColumnNames + 
+                throw new Error('Backlinks DB file items have columns [' + firstItemColumnNames + 
                         '], but required column names are [id, link, anchorText]');
-                throw new Error();
             }
+        }
+        return links;    
+    },
+    init(myConfig) {
+        try {
+            config = myConfig;        
+            links = this.validateRawData(this.readLinksFromFile(config));
+        } catch (e) {
+            console.error(e.message);
+            throw e;
         }
     },
 

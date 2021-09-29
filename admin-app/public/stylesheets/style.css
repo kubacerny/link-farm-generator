@@ -4,24 +4,56 @@ body, nav, nav *, div {
 }
 body {
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  color:rgba(0,0,0,.65);
 }
 .content {
   padding: 1em 3em;
 }
 .header, .footer {
-  background-color: black;
-  color:blanchedalmond;
+  background-color: #563d7c;
+  color:#cbbde2;
 }
 .header {
   display: flex;
   justify-content: space-between;  
 }
 .header .menu > *,
-.header nav ul li {
+.header nav ul li,
+.subnav nav ul li {
   display: inline-flex;
   margin-right: 1em;
 }
 
 a {
-  color: #00B7FF;
+  color: #007bff;
+}
+.header a {
+  color: #cbbde2;
+}
+
+/* Forms */
+.form-group {
+  margin-bottom: 1rem;
+}
+
+.form-group textarea {
+  width: 100%;
+  min-height: 35ex;
+}
+
+label{
+  display: inline-block;
+  margin-bottom: .5rem;
+}
+
+.btn-group {
+
+}
+
+.errors {
+  padding: 1ex 1em;
+  margin-bottom: 1rem;
+  border-radius: .25rem;
+  background-color: #dc3545;
+  color: white;
 }

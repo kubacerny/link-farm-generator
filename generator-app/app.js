@@ -6,24 +6,20 @@ var logger = require('morgan');
 var compression = require('compression');
 var helmet = require('helmet');
 
-var generatedPageRouter = require('./routes/generatedPageRouter');
-var imageRouter = require('./routes/imageRouter');
-
-var configProvider = require('./lib/configProvider');
+var configProvider = require('../common-lib/configProvider');
 var generators = require('./lib/generators');
 
+var generatedPageRouter = require('./routes/generatedPageRouter');
+var imageRouter = require('./routes/imageRouter');
+var reloadConfigRouter = require('./routes/reloadConfigRouter');
 
 const configFilePath = '../config/app-config.json';
-
-// init app 
-// - prepare data
 
 const config = configProvider.init(configFilePath);
 generators.init();
 
 var app = express();
 
-// view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
 
@@ -44,6 +40,7 @@ app.use(helmet({
 }));
 
 app.use(express.static(path.join(__dirname, 'public')));
+app.use('/reload', reloadConfigRouter);
 app.use('/img', imageRouter);
 app.use('/', generatedPageRouter);
 

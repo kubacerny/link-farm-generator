@@ -1,10 +1,12 @@
 .menu
   div#logo
-    | Logo
-  nav
-    ul
-      li
-        a(href="/admin") Link Farm Config
+    a(href="/")
+      | Logo
+  - if (isAuthenticated)
+    nav
+      ul
+        li
+          a(href="/admin") Settings
 nav
   ul
     li

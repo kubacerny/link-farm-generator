@@ -1,10 +1,11 @@
 const fs = require('fs');
-const { get } = require('../routes/generatedPageRouter');
 
 let config = {};
+let configFilePath = "";
  
 module.exports = {
-    init(configFilePath) {
+    init(myConfigFilePath) {
+        configFilePath = myConfigFilePath;
         try {
             const data = fs.readFileSync(configFilePath,{encoding:'utf8', flag:'r'});
             config = JSON.parse(data);
@@ -17,6 +18,9 @@ module.exports = {
             throw e;
         }
         return config;
+    },
+    reload() {
+        this.init(configFilePath);
     },
     get() {
         return config;
