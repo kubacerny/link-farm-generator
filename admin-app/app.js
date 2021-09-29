@@ -10,8 +10,7 @@ var indexRouter = require('./routes/index');
 var adminRouter = require('./routes/admin');
 
 require('dotenv').config()
-const { auth } = require('express-openid-connect');
-const { requiresAuth } = require('express-openid-connect');
+const { auth, requiresAuth } = require('express-openid-connect');
 
 // Auth0
 //    * session store is in a cookie
@@ -24,7 +23,10 @@ const auth0Config = {
   baseURL: process.env.BASE_URL,
   clientID: process.env.CLIENT_ID,
   issuerBaseURL: process.env.OAUTH_ISSUER,
-  secret: process.env.OAUTH_SECRET
+  secret: process.env.OAUTH_SECRET,
+  routes: {
+    callback: '/callback'
+  }
 };
 
 var app = express();

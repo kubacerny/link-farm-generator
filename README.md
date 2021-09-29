@@ -44,6 +44,8 @@ npm install -g pm2
 
 ```
 pm2 start bin/www
+pm2 start bin/www --name "generator"
+#pm2 start bin/www --name "admin"
 pm2 save
 pm2 startup 
 # and copy and paste the text, to create systemd config for pm2 daemon.
