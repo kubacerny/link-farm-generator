@@ -52,7 +52,7 @@ module.exports = {
     
     getImage(hashIndex) {
         let domain = config.domains.images || '';
-        return domain + '/img/' + hashIndex;
+        return 'https://' + domain + '/img/' + hashIndex;
     },
 
     getParagraphs(hashIndex) {

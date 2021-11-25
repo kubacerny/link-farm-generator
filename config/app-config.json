@@ -7,7 +7,7 @@
   "redirectInsteadOfPages": false,
   "lastModification": "2021-09-06",
   "domains": {
-    "images": "http://obrazky.localhost:3000",
+    "images": "obrazky.localhost:3000",
     "preferred": "preferred.localhost:3000"
   }
 }
