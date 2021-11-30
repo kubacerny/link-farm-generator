@@ -15,6 +15,7 @@ router.get('/*', function(req, res, next) {
     config = configProvider.get();
 
     const preferredDomainHost = 'https://' + config.domains.preferred;
+    const canonicalURL = preferredDomainHost + req.originalUrl;
     const pageHeaderHTML = config.pageHeaderHTML;
     const metaDescription = generators.generateParagraph(pageHashIndex,123, false);
     const title = generators.getTitle(req.url, pageHashIndex);
@@ -23,7 +24,7 @@ router.get('/*', function(req, res, next) {
     const innerLinks = generators.getInternalLinks(pageCRC32Index, preferredDomainHost);
     const landingPageLink = backlinksDB.getTargetLink(pageCRC32Index);
 
-    res.render('index', { myURL, pageHeaderHTML, metaDescription, title, imgSrc, innerLinks, paragraphs, landingPageLink });
+    res.render('index', { canonicalURL, myURL, pageHeaderHTML, metaDescription, title, imgSrc, innerLinks, paragraphs, landingPageLink });
 });
 
 module.exports = router;

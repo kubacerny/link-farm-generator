@@ -39,8 +39,7 @@ module.exports = {
     },
 
     generateParagraph(hashIndex, paragraphIndex, useTimestamp) {
-        // TODO mají se měnit v čase
-        let timestampFactor = useTimestamp ? Date.now() : "";
+        let timestampFactor = useTimestamp ? Math.trunc(Date.now() / 1000) : ""; // change in every second
         let text = '';
         let hashWords = [];
         for (var i = 0; i < 5; i++) {
