@@ -14,10 +14,10 @@ router.get('/*', function(req, res, next) {
 
     config = configProvider.get();
 
-    const preferredDomainHost = req.protocol + '://' + config.domains.preferred;
+    const preferredDomainHost = 'https://' + config.domains.preferred;
     const pageHeaderHTML = config.pageHeaderHTML;
     const metaDescription = generators.generateParagraph(pageHashIndex,123, false);
-    const title = host + generators.getTitle(req.url, pageHashIndex);
+    const title = generators.getTitle(req.url, pageHashIndex);
     const imgSrc = generators.getImage(pageCRC32Index);
     const paragraphs = generators.getParagraphs(pageHashIndex, true);
     const innerLinks = generators.getInternalLinks(pageCRC32Index, preferredDomainHost);

@@ -1,0 +1,59 @@
+server {
+
+	server_name www.affiliate-partner.cz;
+
+  	ssl_certificate     /etc/ssl/certs/wildcard_affiliate-partner_cz.crt;
+    	ssl_certificate_key /etc/ssl/certs/wildcard_affiliate-partner_cz.key;
+
+        listen [::]:443 ssl;
+        listen 443 ssl;
+
+    	location / {
+        	proxy_pass http://localhost:3001;
+                proxy_set_header Host            $host;
+                proxy_set_header X-Forwarded-For $remote_addr;
+	}
+}
+
+server {
+
+	server_name *.volebni-preference.cz volebni-preference.cz;
+
+  	ssl_certificate     /etc/ssl/certs/wildcard_volebni-preference_cz.crt;
+    	ssl_certificate_key /etc/ssl/certs/wildcard_volebni-preference_cz.key;
+
+        listen [::]:443 ssl;
+        listen 443 ssl;
+
+    	location / {
+        	proxy_pass http://localhost:3000;
+                proxy_set_header Host            $host;
+                proxy_set_header X-Forwarded-For $remote_addr;
+	}
+}
+
+server {
+
+	server_name www.ekon.cz;
+
+  	ssl_certificate     /etc/ssl/certs/wildcard_ekon_cz.crt;
+    	ssl_certificate_key /etc/ssl/certs/wildcard_ekon_cz.key;
+
+        listen [::]:443 ssl;
+        listen 443 ssl;
+
+    	location / {
+        	proxy_pass http://localhost:3000;
+                proxy_set_header Host            $host;
+                proxy_set_header X-Forwarded-For $remote_addr;
+	}
+}
+
+server {
+	listen 80;
+	listen [::]:80;
+
+	server_name volebni-preference.cz www.ekon.cz www.affiliate-partner.cz;
+
+        return 301 https://$host$request_uri;
+}
