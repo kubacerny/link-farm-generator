@@ -41,7 +41,7 @@ app.use(helmet({
 
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/reload', reloadConfigRouter);
-app.use('/img', imageRouter);
+app.use('/image.webp', imageRouter);
 app.use('/', generatedPageRouter);
 
 // catch 404 and forward to error handler

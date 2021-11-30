@@ -38,12 +38,13 @@ module.exports = {
         return capitalize(words.join(' ').toLowerCase().trim());
     },
 
-    generateParagraph(hashIndex, paragraphIndex) {
+    generateParagraph(hashIndex, paragraphIndex, useTimestamp) {
         // TODO mají se měnit v čase
+        let timestampFactor = useTimestamp ? Date.now() : "";
         let text = '';
         let hashWords = [];
         for (var i = 0; i < 5; i++) {
-            hashWords = utils.getSHA512(i + "lorem ipsum " + hashIndex + " lorem ipsum " + paragraphIndex + ".")
+            hashWords = utils.getSHA512(timestampFactor + i + "lorem ipsum " + hashIndex + " lorem ipsum " + paragraphIndex + ".")
                     .replace(/[^a-zA-Z]+/g, ' ').trim().split(' ');
             text += capitalize(hashWords.join(' ').toLowerCase() + '. ');
         }
@@ -52,13 +53,13 @@ module.exports = {
     
     getImage(hashIndex) {
         let domain = config.domains.images || '';
-        return 'https://' + domain + '/img/' + hashIndex;
+        return 'https://' + domain + '/image.webp?' + hashIndex;
     },
 
-    getParagraphs(hashIndex) {
+    getParagraphs(hashIndex, useTimestamp) {
         const paragraphs = [];
         for (var i = 0; i < config.pageParagraphsCount; i++) {
-            paragraphs.push( this.generateParagraph(hashIndex, i) );
+            paragraphs.push( this.generateParagraph(hashIndex, i, useTimestamp) );
         }
         return paragraphs;
     },
@@ -67,14 +68,14 @@ module.exports = {
         const internalLinks = [];
         for (var i = 0; i < config.pageInternalLinksCount; i++) {
             const linkedPageIndex = (hashIndex + 1 + i) % config.sitePagesCount;
-            const linkRelative = this.getURLForPage(linkedPageIndex, "");
+            // const linkRelative = this.getURLForPage(linkedPageIndex, "");
             const linkAbsolute = this.getURLForPage(linkedPageIndex, host);
             const linkedPageHashIndex = utils.getPageHashIndexFromURL(linkAbsolute);
 
             internalLinks.push({
-                link: linkRelative,
+                link: linkAbsolute,
                 anchorText: this.getTitle(linkAbsolute, linkedPageHashIndex),
-                paragraphs: this.getParagraphs(linkedPageHashIndex)
+                paragraphs: this.getParagraphs(linkedPageHashIndex, false)
             });
         }
         return internalLinks;

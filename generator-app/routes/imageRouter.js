@@ -4,7 +4,7 @@ const router = express.Router();
 const configProvider = require('../../common-lib/configProvider');
 const imageGenerator = require('../lib/imageGenerator');
 
-router.get('/*', function(req, res, next) {
+router.get('*', function(req, res, next) {
     imageGenerator.generateImage(req, res);
 });
 

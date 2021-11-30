@@ -7,19 +7,20 @@ const generators = require('../lib/generators');
 const utils = require('../lib/utils');
 
 router.get('/*', function(req, res, next) {
-    const host = req.get('host');
+    const host = req.protocol + '://' + req.get('host');
     const myURL = host + req.originalUrl;
     const pageHashIndex = utils.getPageHashIndexFromURL(myURL);
     const pageCRC32Index = utils.getCRC32(pageHashIndex);
 
     config = configProvider.get();
 
+    const preferredDomainHost = req.protocol + '://' + config.domains.preferred;
     const pageHeaderHTML = config.pageHeaderHTML;
-    const metaDescription = generators.generateParagraph(pageHashIndex,123);
-    const title = generators.getTitle(req.url, pageHashIndex);
+    const metaDescription = generators.generateParagraph(pageHashIndex,123, false);
+    const title = host + generators.getTitle(req.url, pageHashIndex);
     const imgSrc = generators.getImage(pageCRC32Index);
-    const paragraphs = generators.getParagraphs(pageHashIndex);
-    const innerLinks = generators.getInternalLinks(pageCRC32Index, host);    
+    const paragraphs = generators.getParagraphs(pageHashIndex, true);
+    const innerLinks = generators.getInternalLinks(pageCRC32Index, preferredDomainHost);
     const landingPageLink = backlinksDB.getTargetLink(pageCRC32Index);
 
     res.render('index', { myURL, pageHeaderHTML, metaDescription, title, imgSrc, innerLinks, paragraphs, landingPageLink });
