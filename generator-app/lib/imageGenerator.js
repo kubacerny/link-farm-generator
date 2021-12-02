@@ -13,7 +13,7 @@ function trimColorFactor(x) {
 
 module.exports = {
     generateImage(req, res) {
-        const pageHashIndex = parseInt(req.url.replace('/', ''));
+        const pageHashIndex = parseInt(utils.getCRC32(req.url.replace('/', ''))) * Math.random();
         const red = trimColorFactor( pageHashIndex % 256 );
         const green = trimColorFactor( (pageHashIndex / 256 ) % 256 );
         const blue = trimColorFactor( (pageHashIndex / 256 / 256 ) % 256 );

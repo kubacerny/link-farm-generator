@@ -19,7 +19,7 @@ router.get('/*', function(req, res, next) {
     const pageHeaderHTML = config.pageHeaderHTML;
     const metaDescription = generators.generateParagraph(pageHashIndex,123, false);
     const title = generators.getTitle(req.url, pageHashIndex);
-    const imgSrc = generators.getImage(pageCRC32Index);
+    const imgSrc = generators.getImage(pageHashIndex);
     const paragraphs = generators.getParagraphs(pageHashIndex, true);
     const innerLinks = generators.getInternalLinks(pageCRC32Index, preferredDomainHost);
     const landingPageLink = backlinksDB.getTargetLink(pageCRC32Index);
