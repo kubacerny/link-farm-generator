@@ -21,7 +21,7 @@ router.get('/*', function(req, res, next) {
     const title = generators.getTitle(req.url, pageHashIndex);
     const imgSrc = generators.getImage(pageHashIndex);
     const paragraphs = generators.getParagraphs(pageHashIndex, true);
-    const innerLinks = generators.getInternalLinks(pageCRC32Index, preferredDomainHost);
+    const innerLinks = generators.getInternalLinks(pageHashIndex, pageCRC32Index, preferredDomainHost);
     const landingPageLink = backlinksDB.getTargetLink(pageCRC32Index);
 
     res.render('index', { canonicalURL, myURL, pageHeaderHTML, metaDescription, title, imgSrc, innerLinks, paragraphs, landingPageLink });

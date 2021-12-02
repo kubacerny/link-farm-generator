@@ -57,19 +57,21 @@ module.exports = {
 
     getParagraphs(hashIndex, useTimestamp) {
         const paragraphs = [];
+        let paragraphText = hashIndex;
         for (var i = 0; i < config.pageParagraphsCount; i++) {
-            paragraphs.push( this.generateParagraph(hashIndex, i, useTimestamp) );
+            paragraphText = this.generateParagraph(paragraphText, i, useTimestamp); 
+            paragraphs.push(paragraphText);
         }
         return paragraphs;
     },
 
-    getInternalLinks(hashIndex, host) {
+    getInternalLinks(hashIndex, crc32Index, host) {
         const internalLinks = [];
         for (var i = 0; i < config.pageInternalLinksCount; i++) {
-            const linkedPageIndex = (hashIndex + 1 + i) % config.sitePagesCount;
+            const linkedPageIndex = (crc32Index + 1 + i) % config.sitePagesCount;
             // const linkRelative = this.getURLForPage(linkedPageIndex, "");
             const linkAbsolute = this.getURLForPage(linkedPageIndex, host);
-            const linkedPageHashIndex = utils.getPageHashIndexFromURL(linkAbsolute);
+            const linkedPageHashIndex = hashIndex + utils.getPageHashIndexFromURL(linkAbsolute);
 
             internalLinks.push({
                 link: linkAbsolute,
