@@ -1,2 +1,2 @@
-https://mydomain.cz/path?param#hash,"Toto je text odkazu, s čárkou uvnitř"
-https://kuba.cz/pathpath?param#hash,"Toto je druhý text odkazu, také je s čárkou uvnitř"
+https://mydomain.cz/path?param#hash	"Toto 2 je text odkazu, s čárkou uvnitř"
+https://kuba.cz/pathpath?param#hash	"Toto 2 je druhý text odkazu, také je s čárkou a	tabem uvnitř"

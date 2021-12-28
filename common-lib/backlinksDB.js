@@ -34,7 +34,7 @@ module.exports = {
     validateRawData(data, config) {
         let links = parse(data, {
             columns: ['link', 'anchorText'],
-            delimeter: config.backlinksCSVDelimeter || '\t',
+            delimiter: config.backlinksCSVDelimeter || '\t',
             skip_empty_lines: true
             });
         if (links.length <= 0) {
