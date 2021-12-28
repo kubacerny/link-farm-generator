@@ -15,7 +15,7 @@ router.get('/*', function(req, res, next) {
     config = configProvider.get();
 
     const preferredDomainHost = 'https://' + config.domains.preferred;
-    const canonicalURL = preferredDomainHost + req.originalUrl;
+    const canonicalURL = 'https://' + req.get('host') + req.originalUrl;
     const pageHeaderHTML = config.pageHeaderHTML;
     const metaDescription = generators.generateParagraph(pageHashIndex,123, false);
     const title = generators.getTitle(req.url, pageHashIndex);

@@ -109,4 +109,5 @@ BASE_URL='http://localhost:3000'
 CLIENT_ID='secret client id'
 OAUTH_ISSUER='https://dev-secret-hash.eu.auth0.com'
 OAUTH_SECRET='RandomString'
+APP_CONFIG_PATH='../config/app-config.json'
 ```

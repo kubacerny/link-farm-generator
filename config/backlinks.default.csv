@@ -1,3 +1,2 @@
-id,link,anchorText
-0,https://mydomain.cz/path?param#hash,"Toto je text odkazu, s čárkou uvnitř"
-1,https://kuba.cz/pathpath?param#hash,"Toto je druhý text odkazu, s čárkou uvnitř"
+https://mydomain.cz/path?param#hash,"Toto je text odkazu, s čárkou uvnitř"
+https://kuba.cz/pathpath?param#hash,"Toto je druhý text odkazu, také je s čárkou uvnitř"

@@ -1,7 +1,6 @@
 extends layout
 
 block content
-  h1= title
 
   .subnav 
     nav
@@ -10,3 +9,10 @@ block content
         li: a(href='/admin/backlinks/') Backlinks
         li: a(href=reloadLink target='_blank') Reload config on server
         li: a(href=linkfarmHPLink) Go to link farm
+
+  h1= title
+
+  pre!= backlinksCSV
+
+  p
+    a(href='/admin/backlinks/update') Edit

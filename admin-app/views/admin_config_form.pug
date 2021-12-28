@@ -1,0 +1,26 @@
+extends layout
+
+block content
+  h1= title
+
+  if errors
+    .errors
+      p Please fix the following errors:
+      ul
+        for error in errors
+          li!= error.msg
+
+  form(method='POST' action='')
+    div.form-group
+      label(for='json') Link farm config:
+      textarea#json.form-control(
+        type='textarea',
+        placeholder='{ JSON Config }'
+        name='json'
+        required='true'
+      ) #{undefined===config ? '' : config}
+
+    .btn-group
+      button.btn.btn-primary(type='submit') Save
+      | &nbsp;&nbsp;&nbsp;
+      a.btn(href=originalUrl+ "/..") Cancel

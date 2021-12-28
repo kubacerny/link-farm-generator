@@ -14,8 +14,9 @@ function saveConfigJSON(json) {
 
 function getBacklinksCSV() {
     try {
-        const data = backlinksDB.readLinksFromFile(getConfigJSON());
-        backlinksDB.validateRawData(data);
+        const config = getConfigJSON();
+        const data = backlinksDB.readLinksFromFile(config);
+        backlinksDB.validateRawData(data, config);
         return data;
     } catch (err) {
         return "Error: " + err.message;
@@ -26,7 +27,6 @@ exports.admin_detail = function(req, res) {
     const isAuthenticated = true;
     const userName = req.oidc.user.name;
     const configJSON = getConfigJSON();
-    const backlinksCSV = getBacklinksCSV();
     const reloadLink = '//' + configJSON.domains.preferred + '/reload';
     const linkfarmHPLink = '//' + configJSON.domains.preferred;
 
@@ -34,44 +34,79 @@ exports.admin_detail = function(req, res) {
         isAuthenticated, 
         userName, 
         title: 'Linkfarm Settings',
+        reloadLink: reloadLink,
+        linkfarmHPLink: linkfarmHPLink
+    });
+};
+
+exports.admin_config_detail = function(req, res) {
+    const isAuthenticated = true;
+    const userName = req.oidc.user.name;
+    const configJSON = getConfigJSON();
+    const reloadLink = '//' + configJSON.domains.preferred + '/reload';
+    const linkfarmHPLink = '//' + configJSON.domains.preferred;
+
+    res.render('admin_config', { 
+        isAuthenticated, 
+        userName, 
+        title: 'Linkfarm Settings: Config',
         config: JSON.stringify(configJSON, true, 2),
+        reloadLink: reloadLink,
+        linkfarmHPLink: linkfarmHPLink
+    });
+};
+
+exports.admin_backlinks_detail = function(req, res) {
+    const isAuthenticated = true;
+    const userName = req.oidc.user.name;
+    const configJSON = getConfigJSON();
+    const backlinksCSV = getBacklinksCSV();
+    const reloadLink = '//' + configJSON.domains.preferred + '/reload';
+    const linkfarmHPLink = '//' + configJSON.domains.preferred;
+
+    res.render('admin_backlinks', { 
+        isAuthenticated, 
+        userName, 
+        title: 'Linkfarm Settings: Backlinks',
         backlinksCSV: backlinksCSV,
         reloadLink: reloadLink,
         linkfarmHPLink: linkfarmHPLink
     });
 };
 
-exports.admin_update_get = function(req, res) {
+exports.admin_config_update_get = function(req, res) {
     const isAuthenticated = true;
     const userName = req.oidc.user.name;    
     const configJSON = getConfigJSON();
+
+    res.render('admin_config_form', { 
+        isAuthenticated, userName,
+        title: 'Editing Linkfarm Setting: Config',
+        originalUrl: req.originalUrl,
+        config: JSON.stringify(configJSON, true, 2)
+     });
+};
+
+exports.admin_backlinks_update_get = function(req, res) {
+    const isAuthenticated = true;
+    const userName = req.oidc.user.name;    
     const backlinksCSV = getBacklinksCSV();
 
-    res.render('admin_form', { 
+    res.render('admin_backlinks_form', { 
         isAuthenticated, userName,
-        title: 'Editing Linkfarm Setting',
+        title: 'Editing Linkfarm Setting: Backlinks',
         originalUrl: req.originalUrl,
-        config: JSON.stringify(configJSON, true, 2),
         backlinksCSV: backlinksCSV
      });
 };
 
-exports.admin_update_post = [
+exports.admin_config_update_post = [
     body('json').custom((value, { req }) => {
         try {
             JSON.parse(value);
             return true;
         } catch(err) {
             throw new Error('Field JSON Config: Invalid JSON: ' + err.message);
-        }
-    }),
-    body('backlinksCSV').custom((value, { req }) => {
-        try {
-            console.log('Validating CSV: ' + value);
-            backlinksDB.validateRawData(value);
-            return true;
-        } catch(err) {
-            throw new Error('Field Links as CSV: ' + err.message);
         }
     }),
     function(req, res, next) {
@@ -81,18 +116,49 @@ exports.admin_update_post = [
         const errors = validationResult(req);
 
         if (!errors.errors || errors.errors.length > 0) {
-            res.render('admin_form', { 
+            res.render('admin_config_form', { 
                 isAuthenticated, userName,
-                title: 'Editing Linkfarm Setting',
+                title: 'Editing Linkfarm Setting: Config',
                 originalUrl: req.originalUrl,
                 config: req.body.json,
-                backlinksCSV: req.body.backlinksCSV,
                 errors: errors.errors
             });
         } else {
             const configJSON = JSON.parse(req.body.json);
             saveConfigJSON(configJSON);
 
+            res.redirect(req.originalUrl + '/..');
+        }
+    }
+];
+
+exports.admin_backlinks_update_post = [
+    body('backlinksCSV').custom((value, { req }) => {
+        const configJSON = getConfigJSON();
+        try {
+            console.log('Validating CSV: ' + value);
+            backlinksDB.validateRawData(value, configJSON);
+            return true;
+        } catch(err) {
+            throw new Error('Field Links as CSV: ' + err.message);
+        }
+    }),
+    function(req, res, next) {
+        const isAuthenticated = true;
+        const userName = req.oidc.user.name;
+        const configJSON = getConfigJSON();
+        
+        const errors = validationResult(req);
+
+        if (!errors.errors || errors.errors.length > 0) {
+            res.render('admin_backlinks_form', { 
+                isAuthenticated, userName,
+                title: 'Editing Linkfarm Setting: Backlinks',
+                originalUrl: req.originalUrl,
+                backlinksCSV: req.body.backlinksCSV,
+                errors: errors.errors
+            });
+        } else {
             const rawCSVdata = req.body.backlinksCSV;
             backlinksDB.saveLinksToFile(rawCSVdata, configJSON);
 

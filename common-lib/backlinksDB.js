@@ -1,7 +1,6 @@
 const fs = require('fs');
 const parse = require('../generator-app/node_modules/csv-parse/lib/sync');
 
-const requiredColumnNames = ['id', 'link', 'anchorText'];
 let links = [];
 let config = {};
 
@@ -32,25 +31,21 @@ module.exports = {
     saveLinksToFile(rawCSVdata, config) {
         fs.writeFileSync(this.getCSVURI(config), rawCSVdata, 'utf8');
     },
-    validateRawData(data) {
+    validateRawData(data, config) {
         let links = parse(data, {
-            columns: true
+            columns: ['link', 'anchorText'],
+            delimeter: config.backlinksCSVDelimeter || '\t',
+            skip_empty_lines: true
             });
         if (links.length <= 0) {
             throw new Error('Backlinks DB file contains no items.');
-        } else {
-            const firstItemColumnNames = Object.keys(links[0]);
-            if (!(requiredColumnNames.every( k => firstItemColumnNames.includes(k) ))) {
-                throw new Error('Backlinks DB file items have columns [' + firstItemColumnNames + 
-                        '], but required column names are [id, link, anchorText]');
-            }
         }
         return links;    
     },
     init(myConfig) {
         try {
             config = myConfig;        
-            links = this.validateRawData(this.readLinksFromFile(config));
+            links = this.validateRawData(this.readLinksFromFile(config), config);
         } catch (e) {
             console.error(e.message);
             throw e;
