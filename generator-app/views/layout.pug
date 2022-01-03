@@ -27,6 +27,14 @@ html(lang="cs", amp)
     noscript
       style(amp-boilerplate).
         body{-webkit-animation:none;-moz-animation:none;-ms-animation:none;animation:none}
+
+    if locals.imgSrc
+      link(rel="preload", as="image", href=imgSrc, type="image/webp")
+
+    link(rel="dns-prefetch", href="https://cdn.ampproject.org")
+    link(rel="dns-prefetch", href="https://www.ekon.cz")
+    link(rel="preconnect", href="https://cdn.ampproject.org")
+    link(rel="preconnect", href="https://www.ekon.cz")
      
   body
     block content
