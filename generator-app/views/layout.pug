@@ -2,17 +2,17 @@ doctype html
 html(lang="cs", amp)
   head
     meta(charset="utf-8")    
-    meta(name="viewport", content="width=device-width, initial-scale=1, shrink-to-fit=no")
+    meta(name="viewport", content="width=device-width")
     meta(name="description", content= metaDescription)
     link(rel="canonical" href=canonicalURL)
-    script(async, src="https://cdn.ampproject.org/v0.js")
 
     title= title
 
+    script(async, src="https://cdn.ampproject.org/v0.js")
     //- we use only inline styles
     //- link(rel='stylesheet', href='/stylesheets/style.css')
     style(amp-custom).
-        body {
+        body(data-amp-auto-lightbox-disable) {
           padding: 50px;
           font: 18px "Lucida Grande", Helvetica, Arial, sans-serif;
         }
@@ -28,6 +28,7 @@ html(lang="cs", amp)
       style(amp-boilerplate).
         body{-webkit-animation:none;-moz-animation:none;-ms-animation:none;animation:none}
 
+    link(rel="preload" as="script" href="https://cdn.ampproject.org/v0.js")
     if locals.imgSrc
       link(rel="preload", as="image", href=imgSrc, type="image/webp")
 
