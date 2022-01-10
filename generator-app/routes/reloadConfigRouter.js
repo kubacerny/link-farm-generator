@@ -9,7 +9,7 @@ router.get('/', function(req, res, next) {
     try {
         configProvider.reload();
         generators.init();
-        res.send('Config reloaded at ' + (new Date()).toString());
+        next();
     } catch(err) {
         res.send('Error during reload: ' + err.message);
     }
