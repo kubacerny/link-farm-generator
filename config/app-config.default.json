@@ -10,5 +10,6 @@
     "domains": {
         "images": "obrazky.localhost:3000",
         "preferred": "preferred.localhost:3000"
-    }
+    },
+    "allowedEmails": ["jacerny@gmail.com", "kuba@persoo.cz", "nachtmann@gmail.com", "martina.nacht@gmail.com"]
 }

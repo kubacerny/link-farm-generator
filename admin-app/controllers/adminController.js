@@ -23,6 +23,34 @@ function getBacklinksCSV() {
     }
 }
 
+function generatePublicFiles(configJSON) {
+    const preferredDomain =  configJSON.domains.preferred;
+    const robotsTxtContent = fs.readFileSync(process.env.APP_CONFIG_PATH.replace("app-config.json","robots.txt.template"), 'utf8');
+    const robotsTxtPathname = __dirname + "/../../generator-app/public/robots.txt";
+    const sitemapPathname = __dirname + "/../../generator-app/public/sitemap.xml";
+    
+    let sitemapContent = `<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n`;
+    for (let i = 0; i < 50000; i++) {
+        sitemapContent += `<url><loc>https://${preferredDomain}/${i}</loc></url>\n`;
+    }
+    sitemapContent += `</urlset>`;
+    fs.writeFileSync(sitemapPathname, sitemapContent);
+    fs.writeFileSync(robotsTxtPathname, robotsTxtContent.replace("www.example.com", preferredDomain));
+}
+
+function hasPermission(configJSON, user) {
+    return configJSON.allowedEmails && user.email && configJSON.allowedEmails.indexOf(user.email) >= 0;
+}
+
+exports.permissionsChecker = function (req, res, next) {
+    const configJSON = getConfigJSON();
+    if (hasPermission(configJSON, req.oidc.user)) {
+        next();
+    } else {
+       res.redirect("/");
+    }
+  }
+
 exports.admin_detail = function(req, res) {
     const isAuthenticated = true;
     const userName = req.oidc.user.name;

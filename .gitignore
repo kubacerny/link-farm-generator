@@ -1,3 +1,5 @@
 node_modules
 config/app-config.json
 config/backlinks.csv
+generator-app/public/robots.txt
+generator-app/public/sitemap.xml

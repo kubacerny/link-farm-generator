@@ -9,6 +9,13 @@ var helmet = require('helmet');
 var indexRouter = require('./routes/index');
 var adminRouter = require('./routes/admin');
 
+var admin_controller = require('./controllers/adminController');
+
+var configProvider = require('../common-lib/configProvider');
+const configFilePath = '../config/app-config.json';
+const config = configProvider.init(configFilePath);
+
+
 require('dotenv').config()
 const { auth, requiresAuth } = require('express-openid-connect');
 
@@ -56,6 +63,7 @@ app.use(auth(auth0Config));
 
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter);
+app.use(admin_controller.permissionsChecker);
 app.use('/admin', requiresAuth(), adminRouter);
 
 // catch 404 and forward to error handler
