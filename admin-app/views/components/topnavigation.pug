@@ -2,7 +2,7 @@
   div#logo
     a(href="/")
       | Logo
-  - if (isAuthenticated)
+  - if (hasPermission || (typeof hasPermission == "undefined" && isAuthenticated))
     nav
       ul
         li
