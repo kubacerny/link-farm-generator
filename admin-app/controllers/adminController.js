@@ -154,6 +154,7 @@ exports.admin_config_update_post = [
         } else {
             const configJSON = JSON.parse(req.body.json);
             saveConfigJSON(configJSON);
+            generatePublicFiles(configJSON);
 
             res.redirect(req.originalUrl + '/..');
         }
