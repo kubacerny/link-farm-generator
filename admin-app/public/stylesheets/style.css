@@ -5,6 +5,9 @@ body, nav, nav *, div {
 body {
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
   color:rgba(0,0,0,.65);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 .content {
   padding: 1em 3em;
@@ -12,6 +15,9 @@ body {
 .header, .footer {
   background-color: #563d7c;
   color:#cbbde2;
+}
+.footer{
+  margin-top: auto;
 }
 .header {
   display: flex;
