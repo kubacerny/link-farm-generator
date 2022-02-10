@@ -30,7 +30,7 @@ function generatePublicFiles(configJSON) {
     const sitemapPathname = __dirname + "/../../generator-app/public/sitemap.xml";
     
     let sitemapContent = `<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n`;
-    for (let i = 0; i < 50000; i++) {
+    for (let i = 0; i < configJSON.sitemapSize; i++) {
         sitemapContent += `<url><loc>https://${preferredDomain}/${i}</loc></url>\n`;
     }
     sitemapContent += `</urlset>`;

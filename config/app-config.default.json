@@ -3,6 +3,7 @@
     "pageHeaderHTML": "Toto je úvodní text každé stránky, který <b>může</b> obsahovat HTML tagy.",
     "backlinksDBSource": "../config/backlinks.csv",
     "backlinksCSVDelimeter": "\t",
+    "sitemapSize": 1000,
     "pageInternalLinksCount": 20,
     "pageParagraphsCount": 20,
     "redirectInsteadOfPages": false,
