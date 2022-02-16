@@ -44,7 +44,7 @@ function hasPermission(configJSON, user) {
 
 exports.permissionsChecker = function (req, res, next) {
     const configJSON = getConfigJSON();
-    if (hasPermission(configJSON, req.oidc.user)) {
+    if (req.oidc && req.oidc.user &&hasPermission(configJSON, req.oidc.user)) {
         next();
     } else {
        res.redirect("/");
