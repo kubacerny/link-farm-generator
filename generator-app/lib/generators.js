@@ -2,6 +2,7 @@ const fs = require('fs');
 const parse = require('csv-parse/lib/sync');
 const configProvider = require('../../common-lib/configProvider');
 const backlinksDB = require('../../common-lib/backlinksDB');
+const domainNamesProvider = require('./domainNamesProvider');
 const utils = require('./utils');
 
 let config = {};
@@ -21,6 +22,7 @@ module.exports = {
     init() {
         config = configProvider.get();
         backlinksDB.init(config);
+        domainNamesProvider.init(config);
     },
 
     getURLForPage(pageIndex, host) {
@@ -28,7 +30,7 @@ module.exports = {
         return host + "/" + pageIndex;
     },
 
-    getTitle(url, hashIndex) {
+    getTitleFromRandomText(url, hashIndex) {
         // get words from url
         const urlWords = []; // url.replace(/[^a-zA-Z]+/g, ' ').trim().split(' ');
         // get random words
@@ -38,11 +40,16 @@ module.exports = {
         return capitalize(words.join(' ').toLowerCase().trim());
     },
 
+    getTitleFromHostnames(url, hashIndex) {
+        let words = [domainNamesProvider.getDomainName(hashIndex)];
+        return words.join(' ').toLowerCase().trim();
+    },
+
     generateParagraph(hashIndex, paragraphIndex, useTimestamp) {
         let timestampFactor = useTimestamp ? Math.trunc(Date.now() / 1000) : ""; // change in every second
         let text = '';
         let hashWords = [];
-        for (var i = 0; i < 5; i++) {
+        for (let i = 0; i < 5; i++) {
             hashWords = utils.getSHA512(timestampFactor + i + "lorem ipsum " + hashIndex + " lorem ipsum " + paragraphIndex + ".")
                     .replace(/[^a-zA-Z]+/g, ' ').trim().split(' ');
             text += capitalize(hashWords.join(' ').toLowerCase() + '. ');
@@ -58,7 +65,7 @@ module.exports = {
     getParagraphs(hashIndex, useTimestamp) {
         const paragraphs = [];
         let paragraphText = hashIndex;
-        for (var i = 0; i < config.pageParagraphsCount; i++) {
+        for (let i = 0; i < config.pageParagraphsCount; i++) {
             paragraphText = this.generateParagraph(paragraphText, i, useTimestamp); 
             paragraphs.push(paragraphText);
         }
@@ -67,7 +74,7 @@ module.exports = {
 
     getInternalLinks(hashIndex, crc32Index, host) {
         const internalLinks = [];
-        for (var i = 0; i < config.pageInternalLinksCount; i++) {
+        for (let i = 0; i < config.pageInternalLinksCount; i++) {
             const linkedPageIndex = (crc32Index + 1 + i) % config.sitePagesCount;
             // const linkRelative = this.getURLForPage(linkedPageIndex, "");
             const linkAbsolute = this.getURLForPage(linkedPageIndex, host);
@@ -75,7 +82,9 @@ module.exports = {
 
             internalLinks.push({
                 link: linkAbsolute,
-                anchorText: this.getTitle(linkAbsolute, linkedPageHashIndex),
+                //anchorText: this.getTitleFromRandomText(linkAbsolute, linkedPageHashIndex),
+                anchorText: this.getTitleFromHostnames(linkAbsolute, linkedPageHashIndex),
+                domainHostname: this.getTitleFromHostnames(linkAbsolute, linkedPageHashIndex),
                 paragraphs: this.getParagraphs(linkedPageHashIndex, false)
             });
         }

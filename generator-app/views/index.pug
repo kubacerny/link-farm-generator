@@ -12,6 +12,7 @@ block content
     each innerLink in innerLinks
       a(href=innerLink.link)
         h2= innerLink.anchorText
+      amp-img(src="https://domenovacentrala.cz/checkdomain?" + innerLink.domainHostname, alt=innerLink.domainHostname, width=900, height=675, layout="responsive")
       each paragraph in innerLink.paragraphs
         p= paragraph
 

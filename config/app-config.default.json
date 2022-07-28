@@ -3,6 +3,8 @@
     "pageHeaderHTML": "Toto je úvodní text každé stránky, který <b>může</b> obsahovat HTML tagy.",
     "backlinksDBSource": "../config/backlinks.csv",
     "backlinksCSVDelimeter": "\t",
+    "domainNamesSource": "../config/domain-names-1000000.csv",
+    "domainNamesCSVDelimeter": "\t",
     "sitemapSize": 1000,
     "pageInternalLinksCount": 20,
     "pageParagraphsCount": 20,
@@ -12,5 +14,6 @@
         "images": "obrazky.localhost:3000",
         "preferred": "preferred.localhost:3000"
     },
+    "dnsServers": ["8.8.8.8"],
     "allowedEmails": ["jacerny@gmail.com", "kuba@persoo.cz", "nachtmann@gmail.com", "martina.nacht@gmail.com"]
 }

@@ -18,7 +18,7 @@ router.get('/*', function(req, res, next) {
     const canonicalURL = 'https://' + req.get('host') + req.originalUrl;
     const pageHeaderHTML = config.pageHeaderHTML;
     const metaDescription = generators.generateParagraph(pageHashIndex,123, false);
-    const title = generators.getTitle(req.url, pageHashIndex);
+    const title = generators.getTitleFromRandomText(req.url, pageHashIndex);
     const imgSrc = generators.getImage(pageHashIndex);
     const paragraphs = generators.getParagraphs(pageHashIndex, true);
     const innerLinks = generators.getInternalLinks(pageHashIndex, pageCRC32Index, preferredDomainHost);
