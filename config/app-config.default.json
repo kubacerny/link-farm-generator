@@ -12,6 +12,7 @@
     "lastModification": "2021-09-06",
     "domains": {
         "images": "obrazky.localhost:3000",
+        "images2": "domenovacentrala.cz",
         "preferred": "preferred.localhost:3000"
     },
     "dnsServers": ["8.8.8.8"],

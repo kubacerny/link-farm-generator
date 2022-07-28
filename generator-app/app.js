@@ -34,7 +34,7 @@ app.use(helmet({
     useDefaults: true,
     directives: {
       "script-src": ["'self'", "cdn.ampproject.org"],
-      "img-src": ["'self'", config.domains.images],
+      "img-src": ["'self'", config.domains.images, config.domains.images2],
     },
   }
 }));
